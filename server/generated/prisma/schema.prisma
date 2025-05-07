@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id      String   @id @default(uuid())
+  startAt DateTime @default(now())
+
+  // AMM
+  fusdcBlanace    Float @default(0)
+  stinkyBlanace   Float @default(0)
+  constantProduct Float @default(1)
+}
+
+model Player {
+  twitterId     String   @id
+  twitterHandle String
+  createdAt     DateTime @default(now())
+
+  //Tokens
+  fusdcBalance  Float @default(0)
+  stinkyBalance Float @default(0)
+}
+
+model SpotTrade {
+  id        String        @id @default(uuid())
+  createdAt DateTime      @default(now())
+  playerId  String
+  tradeType SpotTradeType
+  amount    Float // Amount of STINKY
+  price     Float // Price per STINKY (average for the trade?)
+}
+
+enum SpotTradeType {
+  BUYSTINKY
+  SELLSTINKY
+}
+
+model Proposal {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  endsAt        DateTime
+  name          String
+  description   String
+  fusdcCost     Float    @default(0)
+  passThreshold Float    @default(0) // % difference from pass/fail TWAP
+
+  // Conditional Pass AMM
+  passStinkyAmount    Float @default(0)
+  passFusdcAmount     Float @default(0)
+  passConstantProduct Float @default(1)
+  passTWAP            Float @default(0)
+
+  // Conditional Fail AMM
+  failStinkyAmount    Float @default(0)
+  failFusdcAmount     Float @default(0)
+  failConstantProduct Float @default(1)
+  failTWAP            Float @default(0)
+}
+
+model ProposalBalances {
+  id         String @id @default(uuid())
+  proposalId String
+  playerId   String
+  passStinky Float  @default(0)
+  passFusdc  Float  @default(0)
+  failStinky Float  @default(0)
+  failFusdc  Float  @default(0)
+}
+
+model PropsalTrade {
+  id         String            @id @default(uuid())
+  createdAt  DateTime          @default(now())
+  proposalId String
+  playerId   String
+  tradeType  ProposalTradeType
+  amount     Float // Amount of STINKY
+  price      Float // Price per STINKY (average for the trade?)
+}
+
+enum ProposalTradeType {
+  PASSBUY
+  PASSSELL
+  FAILBUY
+  FAILSELL
+}

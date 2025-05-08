@@ -1,0 +1,9 @@
+
+[build]
+command = "npm install && npm run build"
+
+[start]
+command = "npx serve build --listen ${PORT:-3000}"
+
+[deploy]
+healthcheckPath = "/"

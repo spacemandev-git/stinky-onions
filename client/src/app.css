@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@source '../node_modules/layerchart/**/*.{svelte,js}';
+
+@theme {
+	--font-jersey: 'Jersey 10', sans-serif;
+	--color-brand-fore: #e8ecf1;
+	--color-brand-back: #2d303e;
+	--color-brand-dark: #1e1e1e;
+	--color-brand-highlight: var(--color-emerald-400);
+	--color-brand-shadow: #515878;
+
+	--animate-text-gradient: text-gradient 2s ease-in-out infinite alternate;
+	@keyframes text-gradient {
+		/* 0%, */
+		0% {
+			background-position: 0 50%;
+		}
+		/* 85%, */
+		100% {
+			background-position: 100% 100%;
+		}
+	}
+
+	@keyframes wiggle {
+		0%,
+		100% {
+			transform: rotate(-3deg);
+		}
+		50% {
+			transform: rotate(3deg);
+		}
+	}
+
+	--animate-wiggle: wiggle 0.5s ease-in-out infinite;
+
+	@keyframes shimmer {
+		0% {
+			background-position: -100% 0;
+		}
+		100% {
+			background-position: 100% 0;
+		}
+	}
+
+	--animate-shimmer: shimmer 1.5s linear infinite;
+}
+
+html,
+body {
+	font-family: 'Cal Sans', sans-serif;
+	letter-spacing: 0.5px;
+	background-color: var(--color-sky-200);
+}
